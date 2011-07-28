@@ -23,4 +23,7 @@ describe Rpersistence::Adapter::KyotoCabinet do
   # adapter spec
   require Rpersistence::Adapter.spec_location
 
+  # integration spec
+  require Rpersistence::Adapter.spec_location
+
 end

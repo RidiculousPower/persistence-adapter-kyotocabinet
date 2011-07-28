@@ -80,14 +80,25 @@ module Rpersistence::Adapter::KyotoCabinet::Database::Bucket::Indexes
   end
 
   ############################
-  #  index_object_attribute  #
+  #  index_property_for_object  #
   ############################
 
-	def index_object_attribute( object, index, value )
+	def index_property_for_object( object, index, value )
 	  serialized_index_key = @adapter.class::SerializationClass.__send__( @adapter.class::SerializationMethod, value )
 	  # we point to object.persistence_id rather than primary key because the object.persistence_id is the object header
 	  index( index ).set( serialized_index_key, object.persistence_id )
 	  reverse_index( index ).set( object.persistence_id, serialized_index_key )
+	end
+
+  ##############################
+  #  delete_index_for_object!  #
+  ##############################
+	
+	def delete_index_for_object!( object, index )
+		reverse_index_db = reverse_index( index )
+	  serialized_key = reverse_index_db.get( object.persistence_id )
+		reverse_index_db.remove( object.persistence_id )
+		index( index ).remove( serialized_key )	  
 	end
   
 end

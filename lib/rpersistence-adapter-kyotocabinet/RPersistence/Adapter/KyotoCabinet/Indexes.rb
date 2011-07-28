@@ -35,19 +35,19 @@ module Rpersistence::Adapter::KyotoCabinet::Indexes
   end
 
   ############################
-  #  index_object_attribute  #
+  #  index_property_for_object  #
   ############################
 
-  def index_object_attribute( object, index, value )
-    database__bucket( object.persistence_bucket ).index_object_attribute( object, index, value )
+  def index_property_for_object( object, index, value )
+    database__bucket( object.persistence_bucket ).index_property_for_object( object, index, value )
   end
 
-  #############################
-  #  delete_index_for_object  #
-  #############################
+  ##############################
+  #  delete_index_for_object!  #
+  ##############################
 
-  def delete_index_for_object( bucket, index, global_id )
-    database__bucket( klass.instance_persistence_bucket ).delete_index_for_object( index, global_id )
+  def delete_index_for_object!( bucket, index, global_id )
+    database__bucket( klass.instance_persistence_bucket ).delete_index_for_object!( index, global_id )
   end
 
 end
