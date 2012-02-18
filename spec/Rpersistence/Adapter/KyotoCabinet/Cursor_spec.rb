@@ -1,4 +1,3 @@
-$__rpersistence__spec__development = true
 
 if $__rpersistence__spec__development
   require_relative '../../../../../../lib/rpersistence.rb'
