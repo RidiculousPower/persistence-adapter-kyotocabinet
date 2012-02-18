@@ -1,4 +1,3 @@
-$__rpersistence__spec__development = true
 
 require 'kyotocabinet'
 
