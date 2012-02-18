@@ -80,7 +80,11 @@ module Rpersistence::Adapter::KyotoCabinet::Interface
 
   def get_bucket_name_for_object_id( global_id )
 
-    return @database__primary_bucket_for_id.get( global_id ).to_sym
+    bucket_name = @database__primary_bucket_for_id.get( global_id )
+    
+    bucket_name = bucket_name.to_sym if bucket_name
+      
+    return bucket_name
   
   end
 
