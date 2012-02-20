@@ -29,14 +29,14 @@ module Rpersistence::Adapter::KyotoCabinet::Bucket::Index::Interface
 
   end
 
-  ##############
-  #  database  #
-  ##############
-
-  def database
-
-    return @database__index
-
+  ###########
+  #  count  #
+  ###########
+  
+  def count
+    
+    return @database__index.count
+    
   end
 
   ###########

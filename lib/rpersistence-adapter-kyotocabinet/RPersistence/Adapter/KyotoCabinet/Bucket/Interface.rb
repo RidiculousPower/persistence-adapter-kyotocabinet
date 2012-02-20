@@ -43,6 +43,16 @@ module Rpersistence::Adapter::KyotoCabinet::Bucket::Interface
                                               @parent_adapter.class::DatabaseFlags )
 
   end
+
+  ###########
+  #  count  #
+  ###########
+  
+  def count
+    
+    return @database__ids_in_bucket.count
+    
+  end
   
   ###########
   #  close  #
