@@ -43,9 +43,9 @@ module Rpersistence::Adapter::KyotoCabinet::Cursor::Interface
 
 		# if we have no args we are asking whether any keys exist
 		if no_key
-
-			has_key = true unless @parent_index.count == 0
-			
+      
+		  has_key = true unless ( @parent_index || @parent_bucket ).count == 0
+		  
 		else
       
       serialized_key = nil
