@@ -14,6 +14,16 @@ module Rpersistence::Adapter::KyotoCabinet::Cursor::Interface
     
 	end
 	
+	###########
+	#  close  #
+	###########
+	
+	def close
+	  
+	  @cursor_instance.disable
+
+  end
+	
 	################
 	#  persisted?  #
 	################
