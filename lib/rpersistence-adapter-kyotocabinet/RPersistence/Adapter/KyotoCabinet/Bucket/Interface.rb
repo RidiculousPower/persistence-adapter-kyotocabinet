@@ -302,12 +302,16 @@ module Rpersistence::Adapter::KyotoCabinet::Bucket::Interface
 
   def get_class( global_id )
     
-    klass_path_string = @database__bucket.get( global_id )
+    klass = nil
     
-    klass_path_parts = klass_path_string.split( '::' )
+    if klass_path_string = @database__bucket.get( global_id )
+    
+      klass_path_parts = klass_path_string.split( '::' )
 
-    klass = klass_path_parts.inject( Object ) do |object_container_namespace, next_path_part|
-      object_container_namespace.const_get( next_path_part )
+      klass = klass_path_parts.inject( Object ) do |object_container_namespace, next_path_part|
+        object_container_namespace.const_get( next_path_part )
+      end
+    
     end
     
     return klass
