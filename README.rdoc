@@ -1,14 +1,14 @@
-== rpersistence-adapter-kyotocabinet
+== persistence-adapter-kyotocabinet
 
-rp@ridiculouspower.com:rpersistence/adapters/kyotocabinet
+rp@ridiculouspower.com:persistence/adapters/kyotocabinet
 
 == DESCRIPTION:
 
-  ::Rpersistence adapter for Kyoto Cabinet.
+  ::Persistence adapter for Kyoto Cabinet.
 
 == SUMMARY:
   
-  Implements necessary methods to run ::Rpersistence on top of Kyoto Cabinet.
+  Implements necessary methods to run ::Persistence on top of Kyoto Cabinet.
 
 == INSTALL:
 
