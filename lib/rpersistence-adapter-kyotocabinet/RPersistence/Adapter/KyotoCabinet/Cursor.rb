@@ -1,6 +1,6 @@
 
-class Rpersistence::Adapter::KyotoCabinet::Cursor
+class ::Rpersistence::Adapter::KyotoCabinet::Cursor
 
-	include Rpersistence::Adapter::KyotoCabinet::Cursor::Interface
+	include ::Rpersistence::Adapter::KyotoCabinet::Cursor::Interface
 	  
 end

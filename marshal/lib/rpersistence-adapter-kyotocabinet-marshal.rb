@@ -7,7 +7,7 @@ else
   require 'rpersistence-adapter-kyotocabinet'
 end
 
-module Rpersistence
+module ::Rpersistence
   module Adapter
     class KyotoCabinet
       class KyotoCabinetMarshal

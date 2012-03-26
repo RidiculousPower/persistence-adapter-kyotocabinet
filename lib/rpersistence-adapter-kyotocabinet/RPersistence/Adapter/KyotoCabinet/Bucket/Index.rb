@@ -1,6 +1,6 @@
 
-class Rpersistence::Adapter::KyotoCabinet::Bucket::Index
+class ::Rpersistence::Adapter::KyotoCabinet::Bucket::Index
 
-  include Rpersistence::Adapter::KyotoCabinet::Bucket::Index::Interface
+  include ::Rpersistence::Adapter::KyotoCabinet::Bucket::Index::Interface
 
 end

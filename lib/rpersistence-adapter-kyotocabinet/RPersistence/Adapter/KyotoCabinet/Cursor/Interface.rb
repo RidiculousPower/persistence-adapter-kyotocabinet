@@ -1,5 +1,5 @@
 
-module Rpersistence::Adapter::KyotoCabinet::Cursor::Interface
+module ::Rpersistence::Adapter::KyotoCabinet::Cursor::Interface
 
 	################
 	#  initialize  #

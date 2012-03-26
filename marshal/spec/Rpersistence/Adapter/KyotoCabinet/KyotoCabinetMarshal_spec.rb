@@ -1,4 +1,4 @@
-$__rpersistence__spec__development = true
+
 if $__rpersistence__spec__development
   require_relative '../../../../../../../lib/rpersistence.rb'
   require_relative '../../../../lib/rpersistence-adapter-kyotocabinet-marshal.rb'
@@ -7,7 +7,7 @@ else
   require 'rpersistence-adapter-kyotocabinet-marshal'
 end
 
-describe Rpersistence::Adapter::KyotoCabinet::KyotoCabinetMarshal do
+describe ::Rpersistence::Adapter::KyotoCabinet::KyotoCabinetMarshal do
 
   $__rpersistence__spec__adapter__ = ::Rpersistence::Adapter::KyotoCabinet::KyotoCabinetMarshal.new( "/tmp/rpersistence-kyotocabinet" )
 

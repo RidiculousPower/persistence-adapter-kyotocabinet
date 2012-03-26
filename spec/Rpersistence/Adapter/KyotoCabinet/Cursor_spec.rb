@@ -7,13 +7,13 @@ else
   require 'rpersistence-adapter-kyotocabinet'
 end
 
-describe Rpersistence::Adapter::KyotoCabinet::Cursor do
+describe ::Rpersistence::Adapter::KyotoCabinet::Cursor do
 
   $__rpersistence__spec__adapter__ = ::Rpersistence::Adapter::KyotoCabinet.new( "/tmp/rpersistence-kyotocabinet" )
 
   # we have to specify a serialization class; we use Marshal for our example
   unless $__rpersistence__spec__development__initialized_kc
-    class Rpersistence::Adapter::KyotoCabinet
+    class ::Rpersistence::Adapter::KyotoCabinet
       SerializationClass    =  Marshal
       SerializationMethod   =  :dump
       UnserializationMethod =  :load

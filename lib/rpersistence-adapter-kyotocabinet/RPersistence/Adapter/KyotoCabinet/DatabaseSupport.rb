@@ -1,8 +1,8 @@
-# Rpersistence::Adapter::KyotoCabinet::Locations
+# ::Rpersistence::Adapter::KyotoCabinet::Locations
 #
-# DatabaseSupport for Rpersistence Adapter for Kyoto Cabinet
+# DatabaseSupport for ::Rpersistence Adapter for Kyoto Cabinet
 
-module Rpersistence::Adapter::KyotoCabinet::DatabaseSupport
+module ::Rpersistence::Adapter::KyotoCabinet::DatabaseSupport
 
   ##################################################################################################
       private ######################################################################################

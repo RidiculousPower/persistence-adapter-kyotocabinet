@@ -1,10 +1,10 @@
-# Rpersistence::Adapter::KyotoCabinet
+# ::Rpersistence::Adapter::KyotoCabinet
 #
-# Rpersistence Adapter for Kyoto Cabinet
+# ::Rpersistence Adapter for Kyoto Cabinet
 
-class Rpersistence::Adapter::KyotoCabinet::KyotoCabinetMarshal
+class ::Rpersistence::Adapter::KyotoCabinet::KyotoCabinetMarshal
 
-	include Rpersistence::Adapter::KyotoCabinet::Interface
+	include ::Rpersistence::Adapter::KyotoCabinet::Interface
 
   SerializationClass    =  Marshal
   SerializationMethod   =  :dump

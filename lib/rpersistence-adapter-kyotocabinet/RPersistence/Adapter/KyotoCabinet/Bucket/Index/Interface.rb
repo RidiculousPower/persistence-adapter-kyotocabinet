@@ -1,8 +1,8 @@
 
 
-module Rpersistence::Adapter::KyotoCabinet::Bucket::Index::Interface
+module ::Rpersistence::Adapter::KyotoCabinet::Bucket::Index::Interface
 
-  include Rpersistence::Adapter::KyotoCabinet::DatabaseSupport
+  include ::Rpersistence::Adapter::KyotoCabinet::DatabaseSupport
 
   ################
   #  initialize  #
@@ -70,7 +70,7 @@ module Rpersistence::Adapter::KyotoCabinet::Bucket::Index::Interface
 
   def cursor
 
-    return Rpersistence::Adapter::KyotoCabinet::Cursor.new( @parent_bucket, self, @database__index.cursor )
+    return ::Rpersistence::Adapter::KyotoCabinet::Cursor.new( @parent_bucket, self, @database__index.cursor )
 
   end
 

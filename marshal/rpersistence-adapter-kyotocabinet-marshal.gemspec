@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.version                   =  '0.0.1'
 
   spec.summary                   =  "Rpersistence adapter for Kyoto Cabinet."
-  spec.description               =  "Implements necessary methods to run Rpersistence on top of Kyoto Cabinet."
+  spec.description               =  "Implements necessary methods to run ::Rpersistence on top of Kyoto Cabinet."
   
   spec.authors                   =  [ 'Asher' ]
   spec.email                     =  'asher@ridiculouspower.com'

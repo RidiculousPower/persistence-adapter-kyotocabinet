@@ -7,7 +7,7 @@ else
   require 'rpersistence-adapter-abstract'
 end
 
-module Rpersistence
+module ::Rpersistence
   module Adapter
     class KyotoCabinet
       module Interface

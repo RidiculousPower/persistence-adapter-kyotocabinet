@@ -1,7 +1,7 @@
 
-module Rpersistence::Adapter::KyotoCabinet::Bucket::Interface
+module ::Rpersistence::Adapter::KyotoCabinet::Bucket::Interface
 
-  include Rpersistence::Adapter::KyotoCabinet::DatabaseSupport
+  include ::Rpersistence::Adapter::KyotoCabinet::DatabaseSupport
 
   attr_accessor :parent_adapter, :name
 
@@ -85,7 +85,7 @@ module Rpersistence::Adapter::KyotoCabinet::Bucket::Interface
   ############
 
   def cursor
-    return Rpersistence::Adapter::KyotoCabinet::Cursor.new( self, nil, @database__ids_in_bucket.cursor )
+    return ::Rpersistence::Adapter::KyotoCabinet::Cursor.new( self, nil, @database__ids_in_bucket.cursor )
   end
 
   #########################
@@ -250,7 +250,7 @@ module Rpersistence::Adapter::KyotoCabinet::Bucket::Interface
     end
 
     # create/instantiate the index
-    index_instance = Rpersistence::Adapter::KyotoCabinet::Bucket::Index.new( index_name,
+    index_instance = ::Rpersistence::Adapter::KyotoCabinet::Bucket::Index.new( index_name,
                                                                              self,
                                                                              permits_duplicates )
 

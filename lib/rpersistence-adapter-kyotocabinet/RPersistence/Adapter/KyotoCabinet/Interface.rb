@@ -1,10 +1,10 @@
 
-module Rpersistence::Adapter::KyotoCabinet::Interface
+module ::Rpersistence::Adapter::KyotoCabinet::Interface
 
-	include Rpersistence::Adapter::Abstract::Interface::EnableDisable
-  include Rpersistence::Adapter::Abstract::Interface::PrimaryKey::IDPropertyString
+	include ::Rpersistence::Adapter::Abstract::Interface::EnableDisable
+  include ::Rpersistence::Adapter::Abstract::Interface::PrimaryKey::IDPropertyString
 
-  include Rpersistence::Adapter::KyotoCabinet::DatabaseSupport
+  include ::Rpersistence::Adapter::KyotoCabinet::DatabaseSupport
 
   DatabaseFlags = ::KyotoCabinet::DB::OWRITER | ::KyotoCabinet::DB::OCREATE
 
@@ -66,7 +66,7 @@ module Rpersistence::Adapter::KyotoCabinet::Interface
 		bucket_instance = nil
 
 		unless bucket_instance = @buckets[ bucket_name ]
-			bucket_instance = Rpersistence::Adapter::KyotoCabinet::Bucket.new( self, bucket_name )
+			bucket_instance = ::Rpersistence::Adapter::KyotoCabinet::Bucket.new( self, bucket_name )
 			@buckets[ bucket_name ] = bucket_instance
 		end
 

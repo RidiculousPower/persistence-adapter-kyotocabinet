@@ -1,6 +1,6 @@
 
-class Rpersistence::Adapter::KyotoCabinet::Bucket
+class ::Rpersistence::Adapter::KyotoCabinet::Bucket
 
-  include Rpersistence::Adapter::KyotoCabinet::Bucket::Interface
+  include ::Rpersistence::Adapter::KyotoCabinet::Bucket::Interface
 
 end
