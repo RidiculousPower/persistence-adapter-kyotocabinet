@@ -1,24 +1,23 @@
 
-module ::Persistence::Adapter::KyotoCabinet::Interface
+module ::Persistence::Adapter::KyotoCabinet::AdapterInterface
 
-	include ::Persistence::Adapter::Abstract::Interface::EnableDisable
-  include ::Persistence::Adapter::Abstract::Interface::PrimaryKey::IDPropertyString
+  include ::Persistence::Adapter::Abstract::EnableDisable
 
   include ::Persistence::Adapter::KyotoCabinet::DatabaseSupport
 
   DatabaseFlags = ::KyotoCabinet::DB::OWRITER | ::KyotoCabinet::DB::OCREATE
 
-  Delimiter = '.'
+  Delimiter = '.'  
 
   ################
   #  initialize  #
   ################
 
   def initialize( home_directory )
-	
-		super( home_directory )
+  
+    super( home_directory )
 
-		@buckets = { }
+    @buckets = { }
 
   end
 
@@ -50,9 +49,9 @@ module ::Persistence::Adapter::KyotoCabinet::Interface
 
     super
 
-		@database__id_sequence.close
-		@database__primary_bucket_for_id.close
-		
+    @database__id_sequence.close
+    @database__primary_bucket_for_id.close
+    
     return self
 
   end
@@ -63,16 +62,16 @@ module ::Persistence::Adapter::KyotoCabinet::Interface
 
   def persistence_bucket( bucket_name )
     
-		bucket_instance = nil
+    bucket_instance = nil
 
-		unless bucket_instance = @buckets[ bucket_name ]
-			bucket_instance = ::Persistence::Adapter::KyotoCabinet::Bucket.new( self, bucket_name )
-			@buckets[ bucket_name ] = bucket_instance
-		end
+    unless bucket_instance = @buckets[ bucket_name ]
+      bucket_instance = ::Persistence::Adapter::KyotoCabinet::Bucket.new( self, bucket_name )
+      @buckets[ bucket_name ] = bucket_instance
+    end
 
-		return bucket_instance
+    return bucket_instance
 
-	end
+  end
 
   ###################################
   #  get_bucket_name_for_object_id  #
@@ -135,13 +134,13 @@ module ::Persistence::Adapter::KyotoCabinet::Interface
     unless object.persistence_id
 
       # we only store one sequence so we don't need a key; increment it by 1
-			global_id = @database__id_sequence.increment( :sequence, 1, -1 )
+      global_id = @database__id_sequence.increment( :sequence, 1, -1 )
 
       # and write it to our global object database with a bucket/key struct as data
       @database__primary_bucket_for_id.set( global_id, object.persistence_bucket.name )
 
-  		object.persistence_id = global_id
-			
+      object.persistence_id = global_id
+      
     end
   
     return self
@@ -152,46 +151,46 @@ module ::Persistence::Adapter::KyotoCabinet::Interface
       private ######################################################################################
   ##################################################################################################
 
-	################################
-	#  file__id_sequence_database  #
-	################################
+  ################################
+  #  file__id_sequence_database  #
+  ################################
 
-	def file__id_sequence_database
+  def file__id_sequence_database
 
-		return File.join( home_directory,
-		                  'IDSequence' + extension__id_sequence_database )
+    return File.join( home_directory,
+                      'IDSequence' + extension__id_sequence_database )
 
-	end
+  end
 
-	##########################################
-	#  file__primary_bucket_for_id_database  #
-	##########################################
+  ##########################################
+  #  file__primary_bucket_for_id_database  #
+  ##########################################
 
-	def file__primary_bucket_for_id_database
+  def file__primary_bucket_for_id_database
 
-		return File.join( home_directory,
-		                  'PrimaryBucketForID' + extension__primary_bucket_for_id_database )
-		                  
-	end
+    return File.join( home_directory,
+                      'PrimaryBucketForID' + extension__primary_bucket_for_id_database )
+                      
+  end
 
-	#####################################
-	#  extension__id_sequence_database  #
-	#####################################
+  #####################################
+  #  extension__id_sequence_database  #
+  #####################################
 
-	def extension__id_sequence_database
-	  
-		return extension__database( :tree )
+  def extension__id_sequence_database
+    
+    return extension__database( :tree )
 
-	end
+  end
 
-	###############################################
-	#  extension__primary_bucket_for_id_database  #
-	###############################################
-	
-	def extension__primary_bucket_for_id_database
-	  
-		return extension__database( :hash )
+  ###############################################
+  #  extension__primary_bucket_for_id_database  #
+  ###############################################
+  
+  def extension__primary_bucket_for_id_database
+    
+    return extension__database( :hash )
 
-	end
+  end
 
 end

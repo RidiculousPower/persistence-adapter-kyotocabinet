@@ -1,23 +1,27 @@
 
-module ::Persistence::Adapter::KyotoCabinet::Bucket::Interface
+module ::Persistence::Adapter::KyotoCabinet::Bucket::BucketInterface
+
+  include ::Persistence::Adapter::Abstract::PrimaryKey::IDPropertyString
 
   include ::Persistence::Adapter::KyotoCabinet::DatabaseSupport
 
   attr_accessor :parent_adapter, :name
 
-	# we're always opening as writers and creating the files if they don't exist
+  # we're always opening as writers and creating the files if they don't exist
 
   ################
   #  initialize  #
   ################
   
   def initialize( parent_adapter, bucket_name )
-
-		@parent_adapter = parent_adapter
-		@name = bucket_name
+    
+    @parent_adapter = parent_adapter
+    @name = bucket_name
 
     # storage for index objects
     @indexes = { }
+
+    database_flags = @parent_adapter.class::DatabaseFlags
 
     # bucket database corresponding to self - holds properties
     # 
@@ -26,21 +30,18 @@ module ::Persistence::Adapter::KyotoCabinet::Bucket::Interface
     # objectID.property_B  => property_value_B
     # 
     @database__bucket = ::KyotoCabinet::DB.new
-    @database__bucket.open( file__bucket_database( bucket_name ), 
-                            @parent_adapter.class::DatabaseFlags )
+    @database__bucket.open( file__bucket_database( bucket_name ), database_flags )
 
     # holds IDs that are presently in this bucket so we can iterate objects normally
     # 
     # objectID => objectID
     #
     @database__ids_in_bucket = ::KyotoCabinet::DB.new
-    @database__ids_in_bucket.open( file__ids_in_bucket_database( bucket_name ), 
-                                   @parent_adapter.class::DatabaseFlags )
+    @database__ids_in_bucket.open( file__ids_in_bucket_database( bucket_name ), database_flags )
     
     # holds whether each index permits duplicates
     @database__index_permits_duplicates = ::KyotoCabinet::DB.new
-    @database__index_permits_duplicates.open( file__index_permits_duplicates_database( bucket_name ), 
-                                              @parent_adapter.class::DatabaseFlags )
+    @database__index_permits_duplicates.open( file__index_permits_duplicates_database( bucket_name ), database_flags )
 
   end
 
@@ -94,8 +95,8 @@ module ::Persistence::Adapter::KyotoCabinet::Bucket::Interface
   
   def permits_duplicates?( index )
 
-		permits_duplicates = @database__index_permits_duplicates.get( index )
-		permits_duplicates = ( permits_duplicates == 1 ? true : false ) unless permits_duplicates.nil?
+    permits_duplicates = @database__index_permits_duplicates.get( index )
+    permits_duplicates = ( permits_duplicates == 1 ? true : false ) unless permits_duplicates.nil?
 
     return permits_duplicates
 
@@ -171,16 +172,16 @@ module ::Persistence::Adapter::KyotoCabinet::Bucket::Interface
     @database__bucket.cursor_process do |object_cursor|
 
       if object_cursor.jump( global_id )
-				
-				object_cursor.remove
-				
+        
+        object_cursor.remove
+        
         # Iterate until the key no longer begins with ID
         # First record (ID only, no attribute) points to klass, so we have to move forward to start.
         while this_attribute = next_attribute_of_this_object( object_cursor, global_id )
 
           this_attribute_value = object_cursor.get_value
 
-					object_cursor.remove
+          object_cursor.remove
         
         end
       
@@ -195,10 +196,11 @@ module ::Persistence::Adapter::KyotoCabinet::Bucket::Interface
   ####################
   
   def put_attribute!( global_id, attribute_name, value )
+    
+    serialization_class = @parent_adapter.class::SerializationClass
+    
+    serialized_value  = serialization_class.__send__( @parent_adapter.class::SerializationMethod, value )
 
-    serialized_value  = @parent_adapter.class::SerializationClass.__send__( @parent_adapter.class::SerializationMethod, value )
-
-    # set value for ID
     @database__bucket.set( attribute_name, serialized_value )
 
   end
@@ -212,7 +214,11 @@ module ::Persistence::Adapter::KyotoCabinet::Bucket::Interface
     value = nil
 
     if serialized_value = @database__bucket.get( attribute_name )
-      value = @parent_adapter.class::SerializationClass.__send__( @parent_adapter.class::UnserializationMethod, serialized_value )
+
+      serialization_class = @parent_adapter.class::SerializationClass
+
+      value = serialization_class.__send__( @parent_adapter.class::UnserializationMethod, serialized_value )
+
     end
 
     return value
@@ -238,10 +244,10 @@ module ::Persistence::Adapter::KyotoCabinet::Bucket::Interface
 
     # make sure index doesn't already exist with conflict duplicate permission
     unless ( permits_duplicates_value = permits_duplicates?( index_name ) ).nil?
-			if ! permits_duplicates_value != ! permits_duplicates
-	      raise 'Index on :' + index_name.to_s + ' already exists and ' + 
-	            ( permits_duplicates ? 'does not permit' : 'permits' ) + ' duplicates, which conflicts.'
-			end
+      if ! permits_duplicates_value != ! permits_duplicates
+        raise 'Index on :' + index_name.to_s + ' already exists and ' + 
+              ( permits_duplicates ? 'does not permit' : 'permits' ) + ' duplicates, which conflicts.'
+      end
 
     else
 
@@ -250,9 +256,7 @@ module ::Persistence::Adapter::KyotoCabinet::Bucket::Interface
     end
 
     # create/instantiate the index
-    index_instance = ::Persistence::Adapter::KyotoCabinet::Bucket::Index.new( index_name,
-                                                                             self,
-                                                                             permits_duplicates )
+    index_instance = self.class::Index.new( index_name, self, permits_duplicates )
 
     # store index instance
     @indexes[ index_name ] = index_instance
@@ -327,18 +331,6 @@ module ::Persistence::Adapter::KyotoCabinet::Bucket::Interface
     @database__bucket.remove( global_id )
 
   end
-
-  ####################################
-  #  primary_key_for_attribute_name  #
-  ####################################
-
-  def primary_key_for_attribute_name( object, attribute )
-    
-		primary_key_for_bucket = object.persistence_id.to_s + @parent_adapter.class::Delimiter + attribute.to_s
-
-		return primary_key_for_bucket
-
-	end
   
   ##################################################################################################
       private ######################################################################################
@@ -349,96 +341,95 @@ module ::Persistence::Adapter::KyotoCabinet::Bucket::Interface
   ###################################
 
   def next_attribute_of_this_object( object_cursor, global_id )
-		
-		attribute_name = nil
+    
+    attribute_name = nil
 
-    if object_cursor.step and
-       primary_key = object_cursor.get_key
+    if object_cursor.step and primary_key = object_cursor.get_key
 
       this_global_id, this_attribute = primary_key.split( @parent_adapter.class::Delimiter )
     
       if this_global_id.to_i == global_id
-			  attribute_name = this_attribute.to_sym
+        attribute_name = this_attribute.to_sym
       end
-		
-		end
-		
-		return attribute_name
+    
+    end
+    
+    return attribute_name
 
   end
 
-	###########################
-	#  file__bucket_database  #
-	###########################
+  ###########################
+  #  file__bucket_database  #
+  ###########################
 
-	def file__bucket_database( bucket_name )
-	  
-		return File.join( @parent_adapter.home_directory,
-		                  bucket_name.to_s + extension__bucket_database )
+  def file__bucket_database( bucket_name )
+    
+    return File.join( @parent_adapter.home_directory,
+                      bucket_name.to_s + extension__bucket_database )
 
-	end
+  end
 
-	##################################
-	#  file__ids_in_bucket_database  #
-	##################################
+  ##################################
+  #  file__ids_in_bucket_database  #
+  ##################################
 
-	def file__ids_in_bucket_database( bucket_name )
+  def file__ids_in_bucket_database( bucket_name )
 
-		return File.join( @parent_adapter.home_directory,
-		                  bucket_name.to_s + '__ids_in_bucket__' + extension__ids_in_bucket_database )
+    return File.join( @parent_adapter.home_directory,
+                      bucket_name.to_s + '__ids_in_bucket__' + extension__ids_in_bucket_database )
 
-	end	
+  end  
 
-	#############################################
-	#  file__index_permits_duplicates_database  #
-	#############################################
+  #############################################
+  #  file__index_permits_duplicates_database  #
+  #############################################
 
-	def file__index_permits_duplicates_database( bucket_name )
-	  
-	  index_file_name = bucket_name.to_s + '__index_permits_duplicates__' + extension__index_permits_duplicates_database
-	  
-		return File.join( @parent_adapter.home_directory, index_file_name )
+  def file__index_permits_duplicates_database( bucket_name )
+    
+    index_file_name = bucket_name.to_s + '__index_permits_duplicates__' + extension__index_permits_duplicates_database
+    
+    return File.join( @parent_adapter.home_directory, index_file_name )
 
-	end
+  end
 
-	################################
-	#  extension__bucket_database  #
-	################################
+  ################################
+  #  extension__bucket_database  #
+  ################################
 
-	def extension__bucket_database
-	  
-		return extension__database( :tree )
+  def extension__bucket_database
+    
+    return extension__database( :tree )
 
-	end
+  end
 
-	###################################################
-	#  extension__indexes_permit_duplicates_database  #
-	###################################################
+  ###################################################
+  #  extension__indexes_permit_duplicates_database  #
+  ###################################################
 
-	def extension__indexes_permit_duplicates_database
-	  
-		return extension__database( :hash )
+  def extension__indexes_permit_duplicates_database
+    
+    return extension__database( :hash )
 
-	end
+  end
 
-	#######################################
-	#  extension__ids_in_bucket_database  #
-	#######################################
+  #######################################
+  #  extension__ids_in_bucket_database  #
+  #######################################
 
-	def extension__ids_in_bucket_database
-	  
-		return extension__database( :hash )
+  def extension__ids_in_bucket_database
+    
+    return extension__database( :hash )
 
-	end
+  end
 
-	##################################################
-	#  extension__index_permits_duplicates_database  #
-	##################################################
-	
-	def extension__index_permits_duplicates_database
+  ##################################################
+  #  extension__index_permits_duplicates_database  #
+  ##################################################
+  
+  def extension__index_permits_duplicates_database
 
-		return extension__database( :hash )
+    return extension__database( :hash )
 
-	end
+  end
     
 end

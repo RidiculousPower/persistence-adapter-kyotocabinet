@@ -1,6 +1,6 @@
 
 
-module ::Persistence::Adapter::KyotoCabinet::Bucket::Index::Interface
+module ::Persistence::Adapter::KyotoCabinet::Bucket::Index::IndexInterface
 
   include ::Persistence::Adapter::KyotoCabinet::DatabaseSupport
 
@@ -17,7 +17,7 @@ module ::Persistence::Adapter::KyotoCabinet::Bucket::Index::Interface
     @permits_duplicates = permits_duplicates
 
     # get path info for index databases
-		bucket_name    = @bucket_name
+    bucket_name    = @bucket_name
 
     @database__index = ::KyotoCabinet::DB.new
     @database__index.open( file__index_database( bucket_name, index_name ), 
@@ -88,13 +88,13 @@ module ::Persistence::Adapter::KyotoCabinet::Bucket::Index::Interface
   #  get_object_id  #
   ###################
 
-	def get_object_id( key )
+  def get_object_id( key )
 
-	  serialized_index_key = @parent_bucket.parent_adapter.class::SerializationClass.__send__( @parent_bucket.parent_adapter.class::SerializationMethod, key )
+    serialized_index_key = @parent_bucket.parent_adapter.class::SerializationClass.__send__( @parent_bucket.parent_adapter.class::SerializationMethod, key )
 
     global_id = @database__index.get( serialized_index_key )
     
-	  return global_id ? global_id.to_i : nil
+    return global_id ? global_id.to_i : nil
 
   end
   
@@ -102,64 +102,64 @@ module ::Persistence::Adapter::KyotoCabinet::Bucket::Index::Interface
   #  index_object_id  #
   #####################
 
-	def index_object_id( global_id, key )
+  def index_object_id( global_id, key )
 
-	  serialized_index_key = @parent_bucket.parent_adapter.class::SerializationClass.__send__( @parent_bucket.parent_adapter.class::SerializationMethod, key )
+    serialized_index_key = @parent_bucket.parent_adapter.class::SerializationClass.__send__( @parent_bucket.parent_adapter.class::SerializationMethod, key )
 
-	  # we point to object.persistence_id rather than primary key because the object.persistence_id is the object header
-	  @database__index.set( serialized_index_key, global_id )
-	  @database__reverse_index.set( global_id, serialized_index_key )
+    # we point to object.persistence_id rather than primary key because the object.persistence_id is the object header
+    @database__index.set( serialized_index_key, global_id )
+    @database__reverse_index.set( global_id, serialized_index_key )
 
-	end
+  end
 
   ################################
   #  delete_keys_for_object_id!  #
   ################################
 
-	def delete_keys_for_object_id!( global_id )
+  def delete_keys_for_object_id!( global_id )
 
-	  serialized_key = @database__reverse_index.get( global_id )
-		@database__reverse_index.remove( global_id )
-		@database__index.remove( serialized_key )	  
+    serialized_key = @database__reverse_index.get( global_id )
+    @database__reverse_index.remove( global_id )
+    @database__index.remove( serialized_key )    
 
-	end
+  end
 
   ##################################################################################################
       private ######################################################################################
   ##################################################################################################
 
-	##########################
-	#  file__index_database  #
-	##########################
+  ##########################
+  #  file__index_database  #
+  ##########################
 
-	def file__index_database( bucket_name, index_name )
+  def file__index_database( bucket_name, index_name )
 
     index_file_name = bucket_name.to_s + '__index_' + index_name.to_s + '__' + extension__bucket_index_database
 
-		return File.join( @parent_bucket.parent_adapter.home_directory, index_file_name )
+    return File.join( @parent_bucket.parent_adapter.home_directory, index_file_name )
 
-	end
+  end
 
-	##################################
-	#  file__reverse_index_database  #
-	##################################
+  ##################################
+  #  file__reverse_index_database  #
+  ##################################
 
-	def file__reverse_index_database( bucket_name, index_name )
-	  
-	  index_file_name = bucket_name.to_s + '__reverse_index_' + index_name.to_s + '__' + extension__bucket_index_database
-	  
-		return File.join( @parent_bucket.parent_adapter.home_directory, index_file_name )
+  def file__reverse_index_database( bucket_name, index_name )
+    
+    index_file_name = bucket_name.to_s + '__reverse_index_' + index_name.to_s + '__' + extension__bucket_index_database
+    
+    return File.join( @parent_bucket.parent_adapter.home_directory, index_file_name )
 
-	end
+  end
 
-	######################################
-	#  extension__bucket_index_database  #
-	######################################
+  ######################################
+  #  extension__bucket_index_database  #
+  ######################################
 
-	def extension__bucket_index_database
-	  
-		return extension__database( :tree )
+  def extension__bucket_index_database
+    
+    return extension__database( :tree )
 
-	end
+  end
 
 end
