@@ -4,7 +4,7 @@ Gem::Specification.new do |spec|
 
   spec.name                      =  'persistence-adapter-kyotocabinet'
   spec.rubyforge_project         =  'persistence-adapter-kyotocabinet'
-  spec.version                   =  '0.0.1'
+  spec.version                   =  '0.0.2'
 
   spec.summary                   =  "Adapter to use KyotoCabinet as storage port for Persistence."
   spec.description               =  "Implements necessary methods to run Persistence on top of Kyoto Cabinet."
@@ -14,6 +14,7 @@ Gem::Specification.new do |spec|
   spec.homepage                  =  'http://rubygems.org/gems/persistence-adapter-kyotocabinet'
   
   spec.add_dependency            'persistence'
+  spec.add_dependency            'kyotocabinet'
   
   spec.date                      = Date.today.to_s
   
