@@ -4,7 +4,7 @@ http://rubygems.org/gems/persistence-adapter-kyotocabinet
 
 # Summary #
 
-Adapter to use KyotoCabinet as storage port for Persistence.
+Adapter to use KyotoCabinet as storage port for <a href="https://rubygems.org/gems/persistence">Persistence</a> (<a href="https://github.com/RidiculousPower/persistence">on GitHub</a>).
 
 # Description #
 
