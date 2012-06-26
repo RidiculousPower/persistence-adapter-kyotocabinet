@@ -22,4 +22,6 @@ describe ::Persistence::Adapter::KyotoCabinet::Cursor do
   # adapter spec
   require_relative File.join( ::Persistence::Adapter::Abstract.spec_location, 'Cursor_spec.rb' )
 
+  ::FileUtils.rm_rf( temp_test_path ) if ::Dir.exist?( temp_test_path )
+
 end
