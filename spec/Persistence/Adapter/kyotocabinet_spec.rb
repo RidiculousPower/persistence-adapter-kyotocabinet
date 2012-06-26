@@ -22,6 +22,4 @@ describe ::Persistence::Adapter::KyotoCabinet do
   # adapter spec
   require_relative File.join( ::Persistence::Adapter::Abstract.spec_location, 'Adapter_spec.rb' )
 
-  ::FileUtils.rm_rf( temp_test_path ) if ::Dir.exist?( temp_test_path )
-
 end
