@@ -26,17 +26,17 @@ At this point, two versions exist:
 To use Marshal:
 
 ```ruby
-kyotocabinet_adapter = ::Persistence::Adapter::KyotoCabinet::Marshal.new
+kyotocabinet_marshal_adapter = ::Persistence::Adapter::KyotoCabinet::Marshal.new
 
-Persistence.enable_port( :kyotocabinet_marshal_port, kyotocabinet_adapter )
+Persistence.enable_port( :kyotocabinet_marshal_port, kyotocabinet_marshal_adapter )
 ```
 
 To use YAML:
 
 ```ruby
-kyotocabinet_adapter = ::Persistence::Adapter::KyotoCabinet::YAML.new
+kyotocabinet_yaml_adapter = ::Persistence::Adapter::KyotoCabinet::YAML.new
 
-Persistence.enable_port( :kyotocabinet_marshal_port, kyotocabinet_adapter )
+Persistence.enable_port( :kyotocabinet_yaml_port, kyotocabinet_yaml_adapter )
 ```
 
 # License #
