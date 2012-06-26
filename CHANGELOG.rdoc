@@ -1,4 +1,4 @@
-=== 0.0.1 2010-12-05
 
-Initial version
+## 6/26/2012 ##
 
+Initial release.

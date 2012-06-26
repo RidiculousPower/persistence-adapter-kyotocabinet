@@ -1,5 +1,5 @@
 
-require_relative '../../../../lib/persistence/adapter/kyoto_cabinet.rb'
+require_relative '../../../../lib/persistence/adapter/kyotocabinet.rb'
 
 describe ::Persistence::Adapter::KyotoCabinet::Cursor do
 

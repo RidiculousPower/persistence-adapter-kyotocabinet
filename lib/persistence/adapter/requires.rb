@@ -1,5 +1,5 @@
 
-basepath = 'kyoto_cabinet'
+basepath = 'kyotocabinet'
 
 files = [
   

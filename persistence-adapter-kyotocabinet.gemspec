@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.rubyforge_project         =  'persistence-adapter-kyotocabinet'
   spec.version                   =  '0.0.1'
 
-  spec.summary                   =  "Persistence adapter for Kyoto Cabinet."
+  spec.summary                   =  "Adapter to use KyotoCabinet as storage port for Persistence."
   spec.description               =  "Implements necessary methods to run Persistence on top of Kyoto Cabinet."
   
   spec.authors                   =  [ 'Asher' ]

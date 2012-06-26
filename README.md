@@ -1,6 +1,6 @@
 # KyotoCabinet Persistence Adapter #
 
-http://rubygems.org/gems/persistence-adapters-kyotocabinet
+http://rubygems.org/gems/persistence-adapter-kyotocabinet
 
 # Summary #
 
@@ -8,11 +8,11 @@ Adapter to use KyotoCabinet as storage port for Persistence.
 
 # Description #
 
-Implements Persistence Adapter Interface.
+Implements necessary methods to run Persistence on top of Kyoto Cabinet.
 
 # Install #
 
-* sudo gem install persistence-adapters-kyotocabinet
+* sudo gem install persistence-adapter-kyotocabinet
 
 # Usage #
 
