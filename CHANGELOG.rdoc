@@ -3,3 +3,7 @@
 
 Initial release.
 Fixed dependencies.
+
+## 6/27/2012 ##
+
+README update to note required specification of home directory.

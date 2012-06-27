@@ -26,7 +26,7 @@ At this point, two versions exist:
 To use Marshal:
 
 ```ruby
-kyotocabinet_marshal_adapter = ::Persistence::Adapter::KyotoCabinet::Marshal.new
+kyotocabinet_marshal_adapter = ::Persistence::Adapter::KyotoCabinet::Marshal.new( 'path/to/use/as/persistence/home/directory' )
 
 Persistence.enable_port( :kyotocabinet_marshal_port, kyotocabinet_marshal_adapter )
 ```
@@ -34,7 +34,7 @@ Persistence.enable_port( :kyotocabinet_marshal_port, kyotocabinet_marshal_adapte
 To use YAML:
 
 ```ruby
-kyotocabinet_yaml_adapter = ::Persistence::Adapter::KyotoCabinet::YAML.new
+kyotocabinet_yaml_adapter = ::Persistence::Adapter::KyotoCabinet::YAML.new( 'path/to/use/as/persistence/home/directory' )
 
 Persistence.enable_port( :kyotocabinet_yaml_port, kyotocabinet_yaml_adapter )
 ```
